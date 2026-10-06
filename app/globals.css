@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+/* ===========================================================================
+   TalentDuct Recruitment — design tokens
+
+   The palette is deliberately near-neutral. In a recruitment business the
+   information that matters is status: is this requisition on track, at risk,
+   or breached. Colour is reserved for that signal, so it carries meaning
+   rather than decoration.
+   =========================================================================== */
+
+:root {
+  color-scheme: light;
+
+  --ink: #16181c;      /* headings */
+  --body: #464b52;     /* body copy */
+  --muted: #6a7079;    /* labels, metadata */
+  --brand: #1f3f73;    /* links, active nav, primary actions */
+  --surface: #fafaf8;  /* page background */
+  --card: #ffffff;     /* cards and panels */
+  --wash: #f0f0ec;     /* section tint */
+  --line: #dedfd9;     /* hairlines */
+
+  /* SLA status system. Every use pairs the colour with a word — colour is
+     never the only signal. */
+  --ontrack: #146b4a;
+  --atrisk: #8c5a0e;
+  --breached: #a3302a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+
+    --ink: #eef0ee;
+    --body: #b7bdc2;
+    --muted: #868d95;
+    --brand: #86aae0;
+    --surface: #101216;
+    --card: #171a1f;
+    --wash: #14171b;
+    --line: #282d34;
+
+    --ontrack: #56b98c;
+    --atrisk: #d3a052;
+    --breached: #e0736c;
+  }
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-body: var(--body);
+  --color-muted: var(--muted);
+  --color-brand: var(--brand);
+  --color-surface: var(--surface);
+  --color-card: var(--card);
+  --color-wash: var(--wash);
+  --color-line: var(--line);
+  --color-ontrack: var(--ontrack);
+  --color-atrisk: var(--atrisk);
+  --color-breached: var(--breached);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-display);
+}
+
+body {
+  background: var(--surface);
+  color: var(--body);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+a { color: inherit; }
+
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+::selection {
+  background: var(--brand);
+  color: var(--surface);
+}
+
+h1, h2, h3, h4 {
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+p { text-wrap: pretty; }
+
+/* Requisition references, day counts and SLA figures are read in columns,
+   so the digits need to be a fixed width. */
+table, .tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+html { scroll-behavior: smooth; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
