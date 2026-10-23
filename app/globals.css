@@ -72,7 +72,7 @@ body {
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
-a { color: inherit; }
+
 
 :focus-visible {
   outline: 2px solid var(--brand);
