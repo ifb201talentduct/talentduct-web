@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@layer base { a { color: inherit; } }
 
 /* ===========================================================================
    TalentDuct Recruitment — design tokens
