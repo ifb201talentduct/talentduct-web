@@ -1,13 +1,18 @@
 import type { Metadata } from 'next';
 import { PageHeader, SlaBadge } from '@/components/SiteChrome';
 import { SLAS } from '@/lib/site-data';
+import { getLiveSlas } from '@/lib/sf-data';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'SLAs | TalentDuct Recruitment',
   description: 'The service levels we commit to, how they are measured, and current performance.',
 };
 
-export default function SlasPage() {
+export default async function SlasPage() {
+  const live = await getLiveSlas();
+
   return (
     <>
       <PageHeader
@@ -68,6 +73,44 @@ export default function SlasPage() {
             </article>
           ))}
         </div>
+
+        <section className="mt-12">
+          <h2 className="font-[family-name:var(--font-display)] text-2xl font-bold tracking-tight text-ink">
+            Live SLA tracker
+          </h2>
+          <p className="mt-2 max-w-2xl text-sm text-body">
+            Every requisition carries its own SLA clock in Salesforce. The status moves from On
+            Track to At Risk once the shortlist target passes, and to Breached once the time to
+            fill passes.
+          </p>
+
+          {live ? (
+            <div className="tabular mt-6 divide-y divide-line overflow-hidden rounded-lg border border-line bg-card">
+              {live.map((s) => (
+                <div
+                  key={s.code}
+                  className="flex flex-wrap items-center gap-x-6 gap-y-2 px-5 py-4"
+                >
+                  <span className="font-[family-name:var(--font-geist-mono)] text-xs text-muted">
+                    {s.code}
+                  </span>
+                  <span className="min-w-[10rem] flex-1 text-sm text-ink">{s.requisition}</span>
+                  <span className="font-[family-name:var(--font-geist-mono)] text-xs text-muted">
+                    day {s.daysElapsed} of {s.fillTargetDays}
+                  </span>
+                  <SlaBadge state={s.state} />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="mt-6 text-sm text-muted">
+              Live SLA data is unavailable right now.
+            </p>
+          )}
+          <p className="mt-3 font-[family-name:var(--font-geist-mono)] text-xs text-muted">
+            {live ? `Live from Salesforce · ${live.length} SLA records` : 'Sample data'}
+          </p>
+        </section>
 
         <div className="mt-10 rounded-lg border border-line bg-wash p-6">
           <h2 className="font-[family-name:var(--font-display)] text-lg font-bold text-ink">
