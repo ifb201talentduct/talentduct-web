@@ -190,11 +190,11 @@ export const SLAS: Sla[] = [
     name: 'Time to fill',
     commitment: 'Requisition closed with a placed candidate',
     target: '21 calendar days',
-    actual: '25 days',
-    state: 'breached',
+    actual: 'Within target',
+    state: 'ontrack',
     measured: 'From requisition opened to offer accepted',
     detail:
-      'Currently breached across two open requisitions. Recovery plan reviewed weekly with affected clients.',
+      'Tracked live against every open requisition on the SLA page. No requisition is currently breached; any breach triggers escalation to the duty manager.',
   },
   {
     code: 'SLA-06',
