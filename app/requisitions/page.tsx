@@ -1,13 +1,19 @@
 import type { Metadata } from 'next';
 import { PageHeader, SlaBadge } from '@/components/SiteChrome';
 import { REQUISITIONS } from '@/lib/site-data';
+import { getLiveRequisitions } from '@/lib/sf-data';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Job Requisitions | TalentDuct Recruitment',
   description: 'Open roles across technology, security and corporate services.',
 };
 
-export default function RequisitionsPage() {
+export default async function RequisitionsPage() {
+  const live = await getLiveRequisitions();
+  const requisitions = live ?? REQUISITIONS;
+
   return (
     <>
       <PageHeader
@@ -18,7 +24,7 @@ export default function RequisitionsPage() {
 
       <div className="mx-auto max-w-6xl px-6 py-16">
         <div className="tabular grid gap-px overflow-hidden rounded-lg border border-line bg-line">
-          {REQUISITIONS.map((req) => (
+          {requisitions.map((req) => (
             <article key={req.ref} className="bg-card p-7">
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
@@ -70,7 +76,13 @@ export default function RequisitionsPage() {
           ))}
         </div>
 
-        <p className="mt-8 text-sm text-muted">
+        <p className="mt-8 font-[family-name:var(--font-geist-mono)] text-xs text-muted">
+          {live
+            ? `Live from Salesforce · ${requisitions.length} open requisitions`
+            : 'Sample data · live Salesforce data is unavailable right now'}
+        </p>
+
+        <p className="mt-4 text-sm text-muted">
           Cannot see a role that fits? Ask the assistant in the corner of this page and we will
           log an enquiry against your details.
         </p>
