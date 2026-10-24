@@ -1,8 +1,12 @@
 import Link from 'next/link';
 import { SlaBadge } from '@/components/SiteChrome';
-import { COMPANY_STATS, REQUISITIONS, SLAS } from '@/lib/site-data';
+import { COMPANY_STATS, REQUISITIONS as SAMPLE_REQUISITIONS, SLAS } from '@/lib/site-data';
+import { getLiveRequisitions } from '@/lib/sf-data';
 
-export default function Home() {
+export const dynamic = 'force-dynamic';
+
+export default async function Home() {
+  const REQUISITIONS = (await getLiveRequisitions()) ?? SAMPLE_REQUISITIONS;
   const open = REQUISITIONS.length;
   const breached = REQUISITIONS.filter((r) => r.slaState === 'breached').length;
 
